@@ -1,0 +1,11 @@
+Ohai.plugin(:MyproductOhaiVars) do
+  provides "myproduct_ohai_vars"
+  collect_data(:default) do
+    myproduct_ohai_vars Mash.new 
+    return nil unless File.exist?('/tmp/envdata')
+    File.read('/tmp/envdata').split.inject({}) do |map, line|
+      key, value = line.split("=") 
+      myproduct_ohai_vars[key] = value
+    end
+  end
+end
